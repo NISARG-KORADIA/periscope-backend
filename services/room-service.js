@@ -43,7 +43,7 @@ class RoomService {
       $pull: { speakers: userId }
     }, { new: true })
 
-    if (room.speakers.length < 1) {
+    if (room && room?.speakers.length < 1) {
       this.removeRoom(roomId);
     }
 

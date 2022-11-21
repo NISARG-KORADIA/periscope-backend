@@ -43,7 +43,7 @@ class UserController {
     }
 
     // to-do
-    if (followingId == req.user._id) {
+    if (unFollowingId == req.user._id) {
       // if (unFollowingId == userId) {
       return res.status(400).json({ message: "Can't unfollow your own account" })
     }
