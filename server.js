@@ -49,20 +49,13 @@ app.get('/', (req, res) => {
 
 // Sockets
 
-const socketUserMap = {}
+const socketUserMap = {};
 
 io.on('connection', (socket) => {
-  // console.log('New connection', socket.id);
   socket.on(ACTIONS.JOIN, ({ roomId, user }) => {
     socketUserMap[socket.id] = user;
 
-    // console.log('Map', socketUserMap);
-
-    // get all the clients from io adapter
-    // console.log('joining');
     const clients = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
-    // console.log('All connected clients', clients, io.sockets.adapter.rooms);
-    // Add peers and offers and all
 
     clients.forEach((clientId) => {
       io.to(clientId).emit(ACTIONS.ADD_PEER, {
@@ -71,14 +64,14 @@ io.on('connection', (socket) => {
         user,
       });
 
-      // Send myself as well that much msgs how many clients
-
       socket.emit(ACTIONS.ADD_PEER, {
         peerId: clientId,
         createOffer: true,
         user: socketUserMap[clientId],
       });
     });
+
+    
 
     // Join the room
     socket.join(roomId);
@@ -101,7 +94,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on(ACTIONS.MUTE, ({ roomId, userId }) => {
-    // console.log('mute on server', userId);
     const clients = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
     clients.forEach((clientId) => {
       io.to(clientId).emit(ACTIONS.MUTE, {
@@ -121,23 +113,9 @@ io.on('connection', (socket) => {
     });
   });
 
-  socket.on(ACTIONS.MUTE_INFO, ({ userId, roomId, isMute }) => {
-    const clients = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
-    clients.forEach((clientId) => {
-      if (clientId !== socket.id) {
-        console.log('mute info');
-        io.to(clientId).emit(ACTIONS.MUTE_INFO, {
-          userId,
-          isMute,
-        });
-      }
-    });
-  });
-
   const leaveRoom = () => {
     const { rooms } = socket;
     // console.log('leaving', rooms);
-    // console.log('socketUserMap', socketUserMap);
     Array.from(rooms).forEach((roomId) => {
       const clients = Array.from(
         io.sockets.adapter.rooms.get(roomId) || []
@@ -158,8 +136,6 @@ io.on('connection', (socket) => {
     });
 
     delete socketUserMap[socket.id];
-
-    // console.log('map', socketUserMap);
   };
 
   socket.on(ACTIONS.LEAVE, leaveRoom);

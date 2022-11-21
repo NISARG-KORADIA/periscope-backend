@@ -34,6 +34,21 @@ class RoomService {
     await RoomModel.deleteOne({ _id: roomId })
   }
 
+  async addSpeaker(userId, roomId) {
+    await RoomModel.findOneAndUpdate({ _id: roomId }, { $addToSet: { speakers: userId } })
+  }
+
+  async removeSpeaker(userId, roomId) {
+    const room = await RoomModel.findOneAndUpdate({ _id: roomId }, {
+      $pull: { speakers: userId }
+    }, { new: true })
+
+    if (room.speakers.length < 1) {
+      this.removeRoom(roomId);
+    }
+
+  }
 }
+
 
 module.exports = new RoomService();

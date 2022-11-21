@@ -15,9 +15,9 @@ router.post('/api/logout', authMiddleware, authController.logout);
 
 // to-do: update this routes
 router.get('/api/user/:userId', authMiddleware, userController.findUser);
-router.get('/api/user/update', authMiddleware, userController.updateUser);
-router.get('/api/follow', authMiddleware, userController.follow);
-router.get('/api/unfollow', authMiddleware, userController.unfollow);
+router.put('/api/user/update', authMiddleware, userController.updateUser);
+router.put('/api/follow', authMiddleware, userController.follow);
+router.put('/api/unfollow', authMiddleware, userController.unfollow);
 // router.get('/api/user/:userId', userController.findUser);
 // router.put('/api/user/update', userController.updateUser);
 // router.put('/api/follow', userController.follow);
@@ -27,9 +27,13 @@ router.post('/api/rooms', authMiddleware, roomsController.create);
 router.get('/api/rooms', authMiddleware, roomsController.index);
 router.get('/api/room/:roomId', authMiddleware, roomsController.show);
 router.delete('/api/room/:roomId', authMiddleware, roomsController.remove);
+router.put('/api/room/addSpeaker', authMiddleware, roomsController.addSpeaker);
+router.put('/api/room/removeSpeaker', authMiddleware, roomsController.removeSpeaker);
 // router.post('/api/rooms', roomsController.create);
 // router.get('/api/rooms', roomsController.index);
 // router.get('/api/room/:roomId', roomsController.show);
 // router.delete('/api/room/:roomId', roomsController.remove);
+// router.put('/api/room/addSpeaker', roomsController.addSpeaker);
+// router.put('/api/room/removeSpeaker', roomsController.removeSpeaker);
 
 module.exports = router;

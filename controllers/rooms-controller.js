@@ -47,6 +47,16 @@ class RoomsController {
 
   }
 
+  async addSpeaker(req, res) {
+    const { roomId } = req.body;
+    await roomService.addSpeaker(req.user._id, roomId);
+  }
+
+  async removeSpeaker(req, res) {
+    const { roomId } = req.body;
+    await roomService.removeSpeaker(req.user._id, roomId);
+  }
+
 }
 
 module.exports = new RoomsController();
