@@ -24,7 +24,7 @@ class AuthController {
 
       try {
         // Using twilio service to send message.
-        // await otpSevice.sendBySms(phone, otp);
+        await otpSevice.sendBySms(phone, otp);
         // res.json({
         //   hash: `${hash}.${expires}`,
         //   phone,
